@@ -32,6 +32,9 @@ RUN yum -y update && yum install -y \
     yum -y clean all && \
     rm -rf /var/lib/apt/lists/*
 
+#Enable devtoolset-7 for CentOS, needed for updated packages
+RUN scl enable devtoolset-7 bash
+
 # docker pipeline runs containers with particular uid
 # create a jenkins user with this specific uid so it can use sudo priviledges
 # Grant any member of sudo group password-less sudo privileges
