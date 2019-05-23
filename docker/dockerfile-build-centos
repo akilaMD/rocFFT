@@ -1,7 +1,4 @@
 # Parameters related to building hip
-ARG base_image
-
-FROM ${base_image}
 LABEL maintainer="saad.rahim@amd"
 
 ARG user_uid
