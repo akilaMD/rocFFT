@@ -20,13 +20,13 @@ RUN yum -y update && yum install -y \
     git \
     make \
     cmake \
-    libfftw3-dev \
+    fftw-devel \
     clang-format-3.8 \
     pkg-config \
     python2.7 \
     python-yaml \
     gfortran \
-    libboost-program-options-dev \
+    boost-devel\
     libnuma1 \
     && \
     yum -y clean all && \
