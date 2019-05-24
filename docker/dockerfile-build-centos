@@ -5,6 +5,7 @@ FROM ${base_image}
 LABEL maintainer="akila.premachandra@amd.com"
 
 ARG user_uid
+USER 0
 
 # Install dependent packages
 # Dependencies:
@@ -29,11 +30,7 @@ RUN yum -y update && yum install -y \
     boost-devel\
     libnuma1 \
     && \
-    yum -y clean all && \
-    rm -rf /var/lib/apt/lists/*
-
-#Enable devtoolset-7 for CentOS, needed for updated packages
-RUN scl enable devtoolset-7 bash
+    yum -y clean all 
 
 # docker pipeline runs containers with particular uid
 # create a jenkins user with this specific uid so it can use sudo priviledges
