@@ -2,9 +2,9 @@
 ARG base_image
 
 FROM ${base_image}
-LABEL maintainer="saad.rahim@amd"
+LABEL maintainer="akila.premachandra@amd.com"
 
-ARG user_uid=0
+ARG user_uid
 
 # Install dependent packages
 # Dependencies:
