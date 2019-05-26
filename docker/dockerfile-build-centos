@@ -5,7 +5,6 @@ FROM ${base_image}
 LABEL maintainer="akila.premachandra@amd.com"
 
 ARG user_uid
-USER 0
 
 # Install dependent packages
 # Dependencies:
@@ -14,30 +13,35 @@ USER 0
 # * rocfft-test: gfortran, googletest
 # * rocfft-bench: libboost-program-options-dev
 # * libhsakmt.so: libnuma1
+RUN yum -y update && yum -y group install "Development Tools" \
+    && yum -y group install "Additional Development" && \
+    yum -y clean all 
+
 RUN yum -y update && yum install -y \
     sudo \
-    build-essential \
+    centos-release-scl \
+    devtoolset-7 \
     ca-certificates \
     git \
-    make \
-    cmake \
+    cmake3 \
     fftw-devel \
     clang-format-3.8 \
-    pkg-config \
     python2.7 \
     python-yaml \
-    gfortran \
+    devtoolset-7-gcc-gfortran \
     boost-devel\
-    libnuma1 \
+    numactl-libs \
     && \
     yum -y clean all 
+
+RUN scl enable devtoolset-7 bash
 
 # docker pipeline runs containers with particular uid
 # create a jenkins user with this specific uid so it can use sudo priviledges
 # Grant any member of sudo group password-less sudo privileges
-#   RUN useradd --create-home -u ${user_uid} -o -G wheel --shell /bin/bash jenkins && \
-#    mkdir -p /etc/sudoers.d/ && \
-#    echo '%wheel   ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/sudo-nopasswd
+RUN useradd --create-home -u ${user_uid} -o -G wheel --shell /bin/bash jenkins && \
+    mkdir -p /etc/sudoers.d/ && \
+    echo '%wheel   ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/sudo-nopasswd
 
 ARG ROCFFT_SRC_ROOT=/usr/local/src/rocFFT
 
