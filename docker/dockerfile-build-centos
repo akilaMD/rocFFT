@@ -5,7 +5,6 @@ FROM ${base_image}
 LABEL maintainer="akila.premachandra@amd.com"
 
 ARG user_uid
-USER root
 
 # Install dependent packages
 # Dependencies:
@@ -37,12 +36,10 @@ RUN yum -y update && yum install -y \
 
 RUN scl enable devtoolset-7 bash
 
-RUN chmod 777 /etc/sudoers && chmod 777 /etc/passwd && chmod 777 /etc/group
+RUN chmod 440 /etc/sudoers && chmod 440 /etc/passwd && chmod 440 /etc/group
 
 # docker pipeline runs containers with particular uid
 # create a jenkins user with this specific uid so it can use sudo priviledges
 # Grant any member of sudo group password-less sudo privileges
 RUN useradd -u ${user_uid} -o -G wheel --shell /bin/bash jenkins && \
     echo '%wheel   ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
-    
-USER 1001
