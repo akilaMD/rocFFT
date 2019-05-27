@@ -6,14 +6,14 @@ LABEL maintainer="akila.premachandra@amd.com"
 
 ARG user_uid
 
+RUN chmod 644 /etc/sudoers && chmod 644 /etc/passwd && chmod 644 /etc/group \
+    && chmod 644 /etc/shadow
+
 # docker pipeline runs containers with particular uid
 # create a jenkins user with this specific uid so it can use sudo priviledges
 # Grant any member of sudo group password-less sudo privileges
 RUN useradd -u ${user_uid} -o -G root --shell /bin/bash jenkins && \
-    echo '%root   ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
-
-RUN chmod 644 /etc/sudoers && chmod 644 /etc/passwd && chmod 644 /etc/group \
-    && chmod 644 /etc/shadow
+    echo '%jenkins   ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
 
 # Install dependent packages
 # Dependencies:
