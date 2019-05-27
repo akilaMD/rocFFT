@@ -6,38 +6,36 @@ LABEL maintainer="akila.premachandra@amd.com"
 
 ARG user_uid
 
-# docker pipeline runs containers with particular uid
-# create a jenkins user with this specific uid so it can use sudo priviledges
-# Grant any member of sudo group password-less sudo privileges
-RUN adduser -u ${user_uid} -o -G root && \
-    echo '%root   ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
-
-# Install dependent packages
-# Dependencies:
-# * hcc-config.cmake: pkg-config
-# * tensile: python2.7, python-yaml
-# * rocfft-test: gfortran, googletest
-# * rocfft-bench: libboost-program-options-dev
-# * libhsakmt.so: libnuma1
-RUN yum -y update && yum -y group install "Development Tools" \
-    && yum -y clean all 
-
 RUN yum -y update && yum install -y \
     sudo \
+    rocm* \
+    rocfft \
     centos-release-scl \
     devtoolset-7 \
     ca-certificates \
     git \
     cmake3 \
-    fftw-devel \
-    llvm-toolset-7-git-clang-format \
-    python2.7 \
-    python-yaml \
-    devtoolset-7-gcc-gfortran \
+    make \
+    clang \
+    clang-devel \
+    gcc-c++ \
     gcc-gfortran \
+    fftw-devel \
+    pkgconfig \
+    python27 \
+    python34 \
+    PyYAML \
+    libcxx-devel \
     boost-devel\
     numactl-libs \
+    rpm-build \
     && \
     yum -y clean all 
 
 RUN scl enable devtoolset-7 bash
+
+# docker pipeline runs containers with particular uid
+# create a jenkins user with this specific uid so it can use sudo priviledges
+# Grant any member of sudo group password-less sudo privileges
+RUN useradd --create-home -u ${user_uid} -o -G wheel --shell /bin/bash jenkins && \
+    echo '%wheel   ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
