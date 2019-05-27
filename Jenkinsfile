@@ -46,6 +46,7 @@ rocFFTCI:
         project.paths.construct_build_prefix()
         def command = """#!/usr/bin/env bash
                   set -x
+                  id
                   cd ${project.paths.project_build_prefix}
                   LD_LIBRARY_PATH=/opt/rocm/hcc/lib CXX=${project.compiler.compiler_path} ${project.paths.build_command}
                 """
