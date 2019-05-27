@@ -5,7 +5,6 @@ FROM ${base_image}
 LABEL maintainer="akila.premachandra@amd.com"
 
 ARG user_uid
-USER 0
 
 RUN yum -y update && yum install -y \
     sudo \
@@ -40,3 +39,16 @@ RUN scl enable devtoolset-7 bash
 # Grant any member of sudo group password-less sudo privileges
 RUN useradd --create-home -u ${user_uid} -o -G wheel --shell /bin/bash jenkins && \
     echo '%wheel   ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/sudo-nopasswd
+
+RUN usermod -aG wheel jenkins
+
+ARG ROCFFT_SRC_ROOT=/usr/local/src/rocFFT
+
+# Clone rocfft repo
+# Build client dependencies and install into /usr/local (LAPACK & GTEST)
+RUN mkdir -p ${ROCFFT_SRC_ROOT} && cd ${ROCFFT_SRC_ROOT} && \
+    git clone -b develop --depth=1 https://github.com/ROCmSoftwarePlatform/rocFFT . && \
+    mkdir -p build/deps && cd build/deps && \
+    cmake3 -DBUILD_BOOST=OFF ${ROCFFT_SRC_ROOT}/deps && \
+    make -j $(nproc) install && \
+    rm -rf ${ROCFFT_SRC_ROOT}

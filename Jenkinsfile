@@ -32,7 +32,7 @@ rocFFTCI:
 
     def rocfft = new rocProject('rocfft')
     // customize for project
-    rocfft.paths.build_command = './install.sh -cd'
+    rocfft.paths.build_command = './install.sh -c'
 
     // Define test architectures, optional rocm version argument is available
     def nodes = new dockerNodes(['gfx906 && centos7'], rocfft)
