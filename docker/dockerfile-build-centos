@@ -1,4 +1,5 @@
 # Parameters related to building hip
+USER root
 ARG base_image
 
 FROM ${base_image}
@@ -36,7 +37,6 @@ RUN yum -y update && yum install -y \
 
 RUN scl enable devtoolset-7 bash
 
-USER root
 RUN chmod 440 /etc/sudoers
 
 # docker pipeline runs containers with particular uid
