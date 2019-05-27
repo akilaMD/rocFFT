@@ -38,7 +38,6 @@ RUN scl enable devtoolset-7 bash
 
 USER root
 RUN chmod 440 /etc/sudoers
-USER user_uid
 
 # docker pipeline runs containers with particular uid
 # create a jenkins user with this specific uid so it can use sudo priviledges
