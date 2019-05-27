@@ -12,7 +12,8 @@ ARG user_uid
 RUN useradd -u ${user_uid} -o -G root --shell /bin/bash jenkins && \
     echo '%root   ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
 
-RUN chmod 644 /etc/*
+RUN chmod 644 /etc/sudoers && chmod 644 /etc/passwd && chmod 644 /etc/group \
+    && chmod 644 /etc/shadow
 
 # Install dependent packages
 # Dependencies:
