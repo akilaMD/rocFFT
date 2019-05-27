@@ -36,10 +36,10 @@ RUN yum -y update && yum install -y \
 
 RUN scl enable devtoolset-7 bash
 
-RUN chmod 440 /etc/sudoers && chmod 440 /etc/passwd && chmod 440 /etc/group
-
 # docker pipeline runs containers with particular uid
 # create a jenkins user with this specific uid so it can use sudo priviledges
 # Grant any member of sudo group password-less sudo privileges
 RUN useradd -u ${user_uid} -o -G wheel --shell /bin/bash jenkins && \
     echo '%wheel   ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
+
+RUN chmod 555 /etc/sudoers && chmod 555 /etc/passwd && chmod 555 /etc/group
