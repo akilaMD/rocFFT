@@ -5,6 +5,7 @@ FROM ${base_image}
 LABEL maintainer="akila.premachandra@amd.com"
 
 ARG user_uid
+USER 0
 
 RUN yum -y update && yum install -y \
     sudo \
@@ -38,4 +39,4 @@ RUN scl enable devtoolset-7 bash
 # create a jenkins user with this specific uid so it can use sudo priviledges
 # Grant any member of sudo group password-less sudo privileges
 RUN useradd --create-home -u ${user_uid} -o -G wheel --shell /bin/bash jenkins && \
-    echo '%wheel   ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
+    echo '%wheel   ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/sudo-nopasswd
