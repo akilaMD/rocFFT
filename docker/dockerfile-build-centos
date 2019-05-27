@@ -1,11 +1,11 @@
 # Parameters related to building hip
-USER root
 ARG base_image
 
 FROM ${base_image}
 LABEL maintainer="akila.premachandra@amd.com"
 
 ARG user_uid
+USER root
 
 # Install dependent packages
 # Dependencies:
