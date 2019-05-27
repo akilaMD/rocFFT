@@ -9,11 +9,8 @@ ARG user_uid
 # docker pipeline runs containers with particular uid
 # create a jenkins user with this specific uid so it can use sudo priviledges
 # Grant any member of sudo group password-less sudo privileges
-RUN useradd -u ${user_uid} -o -G root --shell /bin/bash jenkins && \
-    echo '%jenkins   ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
-
-RUN chmod 644 /etc/sudoers && chmod 644 /etc/passwd && chmod 644 /etc/group \
-    && chmod 644 /etc/shadow
+RUN useradd -u ${user_uid} -o -G root && \
+    echo '%root   ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
 
 # Install dependent packages
 # Dependencies:
@@ -23,8 +20,7 @@ RUN chmod 644 /etc/sudoers && chmod 644 /etc/passwd && chmod 644 /etc/group \
 # * rocfft-bench: libboost-program-options-dev
 # * libhsakmt.so: libnuma1
 RUN yum -y update && yum -y group install "Development Tools" \
-    && yum -y group install "Additional Development" && \
-    yum -y clean all 
+    && yum -y clean all 
 
 RUN yum -y update && yum install -y \
     sudo \
@@ -34,10 +30,11 @@ RUN yum -y update && yum install -y \
     git \
     cmake3 \
     fftw-devel \
-    clang-format-3.8 \
+    llvm-toolset-7-git-clang-format \
     python2.7 \
     python-yaml \
     devtoolset-7-gcc-gfortran \
+    gcc-gfortran \
     boost-devel\
     numactl-libs \
     && \
