@@ -19,6 +19,8 @@ RUN yum install -y \
     clang-devel \
     gcc-c++ \
     gcc-gfortran \
+    gtest-devel \
+    gtest \
     fftw-devel \
     pkgconfig \
     python27 \
