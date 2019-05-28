@@ -27,10 +27,12 @@ RUN yum install -y \
     libcxx-devel \
     boost-devel\
     numactl-libs \
-    rpm-build \
+    rpm-build
 
+#RUN echo 'scl enable devtoolset-7 bash' >>/etc/skel/.bashrc
 
-RUN echo 'scl enable devtoolset-7 bash' >>/etc/bashrc
+RUN echo '#!/bin/bash' | tee /etc/profile.d/devtoolset7.sh && echo \
+    'source scl_source enable devtoolset-7' >>/etc/profile.d/devtoolset7.sh
 
 # docker pipeline runs containers with particular uid
 # create a jenkins user with this specific uid so it can use sudo priviledges
