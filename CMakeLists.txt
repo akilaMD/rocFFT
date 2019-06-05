@@ -79,6 +79,13 @@ elseif( CMAKE_CXX_COMPILER MATCHES ".*/hcc$" )
   message( STATUS "HCC compiler set; ROCm backend selected [ CXX=/opt/rocm/bin/hcc cmake ... ]" )
 endif( )
 
+# If debug, add explicitly add -O0 optimization to override built-in -O3 optimization of HIP compiler
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wall -Wextra -Wno-unused-function")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-unused-function")
+endif()
+
 # This finds the rocm-cmake project, and installs it if not found
 # rocm-cmake contains common cmake code for rocm projects to help setup and install
 set( PROJECT_EXTERN_DIR ${CMAKE_CURRENT_BINARY_DIR}/extern )
@@ -100,7 +107,6 @@ include( ROCMInstallTargets )
 include( ROCMPackageConfigHelpers )
 include( ROCMInstallSymlinks )
 
-
 set ( VERSION_STRING "0.9.3." )
 # Check if BUILD_NUMBER is defined in a Jenkins envirnment
 if ($ENV{BUILD_NUMBER} )
@@ -113,8 +119,6 @@ rocm_setup_version( VERSION ${BUILD_VERSION} NO_GIT_TAG_VERSION )
 # Get the git tag version
 include ( cmake/version.cmake )
 rocm_get_git_commit_id ( ${PROJECT_NAME}_VERSION_COMMIT_ID )
-
-
 
 # Append our library helper cmake path and the cmake path for hip (for convenience)
 # Users may override HIP path by specifying their own in CMAKE_MODULE_PATH
