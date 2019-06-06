@@ -79,11 +79,11 @@ elseif( CMAKE_CXX_COMPILER MATCHES ".*/hcc$" )
   message( STATUS "HCC compiler set; ROCm backend selected [ CXX=/opt/rocm/bin/hcc cmake ... ]" )
 endif( )
 
-# If debug, add explicitly add -O0 optimization to override built-in -O3 optimization of HIP compiler
+# Define -On optimization flags for debug and release builds 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wall -Wextra -Wno-unused-function")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Og -Wall -Wextra -Wno-unused-function")
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-unused-function")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall -Wextra -Wno-unused-function")
 endif()
 
 # This finds the rocm-cmake project, and installs it if not found
