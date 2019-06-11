@@ -34,16 +34,8 @@ rocFFTCI:
     // customize for project
     rocfft.paths.build_command = './install.sh -c'
     
-    def envArray = [env["DOCKER_MASK_GPU_1"], env["DOCKER_MASK_GPU_2"]]
-    
-    envArray.each
-    {
-        println(envArray[it])
-    }
-    
-    
     // Define test architectures, optional rocm version argument is available
-    def nodes = new dockerNodes(['gfx906 && centos7 && multigpu', 'gfx900 && multigpu'], rocfft, envArray)
+    def nodes = new dockerNodes(['gfx906 && centos7 && multigpu', 'gfx900 && multigpu'], rocfft)
 
     boolean formatCheck = false
 
