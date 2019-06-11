@@ -38,7 +38,7 @@ rocFFTCI:
     
     envArray.each
     {
-        System.out.println(envArray[it])
+        println(envArray[it])
     }
     
     
